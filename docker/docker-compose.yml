@@ -66,7 +66,9 @@ services:
       dockerfile: docker/Dockerfile.gpu
       target: prod
     container_name: vieneu-tts-api-gpu
-    command: ["python", "-m", "apps.openai_speech"]
+    # Named volume is root-owned; the image user `app` cannot create the HF cache.
+    user: "0:0"
+    command: ["sh", "-c", "chown -R app:app /home/app/.cache/huggingface && exec runuser -u app -- python -m apps.openai_speech"]
     ports:
       - "${API_PORT:-8000}:8000"
     environment:
@@ -105,7 +107,8 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.cpu
     container_name: vieneu-tts-api-cpu
-    command: ["python", "-m", "apps.openai_speech"]
+    user: "0:0"
+    command: ["sh", "-c", "chown -R app:app /home/app/.cache/huggingface && exec runuser -u app -- python -m apps.openai_speech"]
     ports:
       - "${API_PORT:-8000}:8000"
     environment:

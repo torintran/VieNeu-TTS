@@ -27,7 +27,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
-RUN useradd --create-home --uid 1000 app && mkdir -p /workspace /opt/venv && chown -R app:app /workspace /opt/venv
+# Ubuntu 24.04 images already own UID 1000 (user `ubuntu`); fall back to the next free UID.
+RUN (id -u app >/dev/null 2>&1 || useradd --create-home --uid 1000 app || useradd --create-home app) \
+    && mkdir -p /workspace /opt/venv && chown -R app:app /workspace /opt/venv
 WORKDIR /workspace
 
 # Dependencies only, wheels only (no setup.py execution), no project build: the app
