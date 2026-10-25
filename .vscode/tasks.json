@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "VieNeu: speech API",
+      "type": "shell",
+      "command": "uv run python -m apps.openai_speech",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      },
+      "problemMatcher": {
+        "owner": "vieneu-api",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "loading VieNeu-TTS",
+          "endsPattern": "Uvicorn running on"
+        }
+      }
+    },
+    {
+      "label": "VieNeu: web UI",
+      "type": "shell",
+      "command": "uv run vieneu-web",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      },
+      "problemMatcher": {
+        "owner": "vieneu-web",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Đang khởi động VieNeu-TTS",
+          "endsPattern": "Running on local URL"
+        }
+      }
+    }
+  ]
+}
